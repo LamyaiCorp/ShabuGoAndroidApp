@@ -2,11 +2,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.knott.navtab.fragment_munu.VegetableFragment">
+    tools:context="com.knott.navtab.fragment_munu.DrinkFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <ListView
-        android:id="@+id/listview_f2"
+        android:id="@+id/listview_f3"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_alignParentLeft="true"
