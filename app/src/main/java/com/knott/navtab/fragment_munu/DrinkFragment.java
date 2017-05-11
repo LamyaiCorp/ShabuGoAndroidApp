@@ -2,8 +2,8 @@ package com.knott.navtab.fragment_munu;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,30 +24,28 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class DrinkFragment extends Fragment {
 
-public class FreshFoodFragment extends Fragment {
-
-    ListView listView;
     JSONArray obj ;
     JSONObject jsondata;
     public static Products products;
     ProductsAdapter productsAdapter;
 
 
-    public FreshFoodFragment() {
+    public DrinkFragment() {
         // Required empty public constructor
     }
-
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_fresh_food, container, false);
-
+        View rootView = inflater.inflate(R.layout.fragment_drink, container, false);
         invokeWS();
-
         return rootView;
     }
 
@@ -56,23 +54,21 @@ public class FreshFoodFragment extends Fragment {
 
 
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get(Utinity.url + "menuFood" + "/" + "getFreshFood", new AsyncHttpResponseHandler() {
+        client.get(Utinity.url + "menuFood" + "/" + "getDrink", new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(String response) {
-                Log.d("TAG ===== ","invokeWS");
+//                Log.d("TAG ===== ",response.toString());
+
                 try {
 
                     // JSON Object
                     obj = new JSONArray(response);
 
-                    if(obj != null){
-
-                        products = createInitialProductList(obj);
-                         if(products != null ){
-                             productsAdapter = new ProductsAdapter(products, productClickListener, getActivity().getLayoutInflater());
-                             ListView productsListView = (ListView) getActivity().findViewById(R.id.listview_f1);
-                             productsListView.setAdapter(productsAdapter);
-                         }
+                    products = createInitialProductList(obj);
+                    if(products != null){
+                        productsAdapter = new ProductsAdapter(products, productClickListener, getActivity().getLayoutInflater());
+                        ListView productsListView = (ListView) getActivity().findViewById(R.id.listview_f3);
+                        productsListView.setAdapter(productsAdapter);
                     }
 
                 } catch (JSONException e) {
@@ -123,21 +119,20 @@ public class FreshFoodFragment extends Fragment {
 
     private Products createInitialProductList(JSONArray obj) throws JSONException {
 
-        Log.d("lifeCecle ==== ","createInitialProductList");
-        ArrayList<Product> arrayList = new ArrayList();
 
+        ArrayList<Product> arrayList = new ArrayList();
         for(int i = 0; i< obj.length(); i++){
             jsondata = obj.getJSONObject(i);
             arrayList.add(
-                    new Product(Integer.valueOf((Integer) jsondata.get("id")),String.valueOf(jsondata.get("name")),Integer.valueOf((Integer) jsondata.get("price")) , 0, String.valueOf(jsondata.get("img")))
+                    new Product(Integer.valueOf((Integer) jsondata.get("id")),String.valueOf(jsondata.get("name")),Integer.valueOf((Integer) jsondata.get("price")) , 0,String.valueOf(jsondata.get("img")))
             );
         }
 
-
-      if(products == null){
+        if(products == null){
         products = new Products(arrayList);
 
-      }
+        }
+
 
         return  products;
     }
@@ -152,20 +147,7 @@ public class FreshFoodFragment extends Fragment {
     public void onResume() {
         super.onResume();
         invokeWS();
-
-//        Products products = new Products(alllist);
-
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-
-//        alllist = products.getData();
-
-        Log.d("lifeCecle ==== ","onPause");
-
-
-    }
 
 }

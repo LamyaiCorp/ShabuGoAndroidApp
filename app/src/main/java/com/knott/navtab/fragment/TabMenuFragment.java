@@ -13,6 +13,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.knott.navtab.R;
+import com.knott.navtab.fragment_munu.DrinkFragment;
+import com.knott.navtab.fragment_munu.FreshFoodFragment;
+import com.knott.navtab.fragment_munu.VegetableFragment;
 
 
 /**
@@ -78,9 +81,9 @@ public class TabMenuFragment extends Fragment {
         public Fragment getItem(int position)
         {
             switch (position){
-                case 0 : return new NFCFragment();
-                case 1 : return new NFCFragment();
-                case 2 : return new NFCFragment();
+                case 0 : return new FreshFoodFragment();
+                case 1 : return new VegetableFragment();
+                case 2 : return new DrinkFragment();
             }
             return null;
         }
@@ -101,11 +104,11 @@ public class TabMenuFragment extends Fragment {
 
             switch (position){
                 case 0 :
-                    return "Life Style";
+                    return "Fresh Food";
                 case 1 :
-                    return "Auto";
+                    return "Vegetable";
                 case 2 :
-                    return "Expo";
+                    return "Drinking";
             }
             return null;
         }
