@@ -101,7 +101,7 @@ public class ProductsAdapter extends BaseAdapter {
 
         public static ViewHolder from(View view) {
             return new ViewHolder(
-                    ((TextView) view.findViewById(R.id.from_name)),
+                    ((TextView) view.findViewById(R.id.text_cart_name)),
                     ((TextView) view.findViewById(R.id.plist_price_text)),
                     view.findViewById(R.id.imageButton_minus),
                     view.findViewById(R.id.imageButton_plus),

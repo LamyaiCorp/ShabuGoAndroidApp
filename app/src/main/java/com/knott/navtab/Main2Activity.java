@@ -14,11 +14,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.knott.navtab.fragment.BillFragment;
-import com.knott.navtab.fragment.CartFragment;
+import com.knott.navtab.fragment_cart.CartFragment;
 import com.knott.navtab.fragment.HomeFragment;
-import com.knott.navtab.fragment.NFCFragment;
+import com.knott.navtab.nfc.NFCFragment;
 import com.knott.navtab.fragment.TabMenuFragment;
-import com.knott.navtab.loing.*;
+import com.knott.navtab.nfc.NfcTouch;
 import com.knott.navtab.unity.Utinity;
 
 public class Main2Activity extends AppCompatActivity
@@ -33,7 +33,6 @@ public class Main2Activity extends AppCompatActivity
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -95,10 +94,11 @@ public class Main2Activity extends AppCompatActivity
         } else if (id == R.id.nav_gallery) {
 
            if(Utinity.NFC ){
-               Utinity.NFC = false;
                myFragmentManager = getSupportFragmentManager();
                myFragmentTransaction = myFragmentManager.beginTransaction();
                myFragmentTransaction.replace(R.id.content_view, new NFCFragment()).commit();
+//               Intent intent = new Intent(this, NfcTouch.class);
+//               startActivity(intent);
 
            }
            else {
@@ -119,8 +119,8 @@ public class Main2Activity extends AppCompatActivity
             myFragmentTransaction.replace(R.id.content_view, new BillFragment()).commit();
 
         } else if(id == R.id.nav_share){
-            Intent loginIntent = new Intent(getApplicationContext(), com.knott.navtab.loing.MainActivity.class);
-            startActivity(loginIntent);
+//
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.knott.navtab.Main2Activity;
+import com.knott.navtab.unity.Utinity;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -96,7 +97,7 @@ public class LoginActivity extends Activity {
         prgDialog.show();
         // Make RESTful webservice call using AsyncHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get("http://161.246.136.37:8080/MyService/login/dologin",params ,new AsyncHttpResponseHandler() {
+        client.get(Utinity.url+"login/dologin",params ,new AsyncHttpResponseHandler() {
             // When the response returned by REST has Http response code '200'
             @Override
             public void onSuccess(String response) {
@@ -108,7 +109,9 @@ public class LoginActivity extends Activity {
                     // When the JSON response has status boolean value assigned with true
                     if(obj.getBoolean("status")){
                         errorMsg.setText("");
-                        Toast.makeText(getApplicationContext(), "You are successfully logged in!", Toast.LENGTH_LONG).show();
+                        Utinity.user_id = String.valueOf(obj.getInt("id"));
+                        Toast.makeText(getApplicationContext(), "You are successfully logged in!" + Utinity.user_id, Toast.LENGTH_LONG).show();
+
                         Intent loginIntent = new Intent(LoginActivity.this,Main2Activity.class);
                         startActivity(loginIntent);
                     }
