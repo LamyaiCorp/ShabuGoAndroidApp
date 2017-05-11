@@ -91,7 +91,7 @@ public class ProductsAdapter extends BaseAdapter {
     }
 
 
-    private static final class ViewHolder {
+    public static final class ViewHolder {
         final TextView name;
         final TextView price;
         final View minus;
@@ -99,7 +99,7 @@ public class ProductsAdapter extends BaseAdapter {
         final ImageView list_image;
         final EditText quantity_item;
 
-        static ViewHolder from(View view) {
+        public static ViewHolder from(View view) {
             return new ViewHolder(
                     ((TextView) view.findViewById(R.id.from_name)),
                     ((TextView) view.findViewById(R.id.plist_price_text)),
@@ -109,7 +109,7 @@ public class ProductsAdapter extends BaseAdapter {
                     (EditText)view.findViewById(R.id.quantity_item));
         }
 
-        private ViewHolder(TextView name, TextView price, View minus, View plus, ImageView list_image, EditText quantity_item) {
+        public ViewHolder(TextView name, TextView price, View minus, View plus, ImageView list_image, EditText quantity_item) {
             this.name = name;
             this.price = price;
             this.minus = minus;

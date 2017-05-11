@@ -6,6 +6,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import com.knott.navtab.R;
 import com.knott.navtab.fragment_munu.DrinkFragment;
 import com.knott.navtab.fragment_munu.FreshFoodFragment;
 import com.knott.navtab.fragment_munu.VegetableFragment;
+import com.knott.navtab.fragment_order.TotalOrderFragment;
 
 
 /**
@@ -27,6 +29,7 @@ public class TabMenuFragment extends Fragment {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     public static int int_items = 3 ;
+
 
     public TabMenuFragment() {
         // Required empty public constructor
@@ -47,6 +50,10 @@ public class TabMenuFragment extends Fragment {
         oderBooking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                FragmentManager myFragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction myFragmentTransaction = myFragmentManager.beginTransaction();
+                myFragmentTransaction.replace(R.id.content_view, new TotalOrderFragment()).commit();
 
             }
         });
