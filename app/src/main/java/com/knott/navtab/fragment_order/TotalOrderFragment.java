@@ -4,14 +4,19 @@ package com.knott.navtab.fragment_order;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.knott.navtab.R;
+import com.knott.navtab.fragment.TabMenuFragment;
 import com.knott.navtab.fragment_munu.DrinkFragment;
 import com.knott.navtab.fragment_munu.FreshFoodFragment;
 import com.knott.navtab.fragment_munu.VegetableFragment;
@@ -19,6 +24,14 @@ import com.knott.navtab.listproduce.Product;
 import com.knott.navtab.listproduce.ProductClickListener;
 import com.knott.navtab.listproduce.Products;
 import com.knott.navtab.listproduce.ProductsAdapter;
+import com.knott.navtab.unity.Utinity;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,10 +41,11 @@ import java.util.List;
  */
 public class TotalOrderFragment extends Fragment {
 
-
+    View rootview;
     private List<Product> list1 ,list2,list3;
     int totalPrice = 0;
     private Products productsList;
+    ArrayList<Product> OrderTatal;
 
     public TotalOrderFragment() {
         // Required empty public constructor
@@ -42,20 +56,59 @@ public class TotalOrderFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootview = inflater.inflate(R.layout.fragment_total_order, container, false);
+        rootview = inflater.inflate(R.layout.fragment_total_order, container, false);
 
-        if(FreshFoodFragment.products.getData() != null){
+        Button btn = (Button) rootview.findViewById(R.id.but_confirm_order);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("TAG","click");
+
+
+                JSONArray jsonArray = new JSONArray();
+
+                ArrayList<JSONObject> MyArrJson = new ArrayList<JSONObject>();
+                for (int i = 0 ;i < OrderTatal.size();i++ ){
+                    JSONObject jsonObject = new JSONObject();
+                         Log.d("TalatOrder", Utinity.user_id +" : "+ OrderTatal.get(i).getId()+" : "+ OrderTatal.get(i).getQuantity());
+
+
+                    try {
+                        jsonObject.put("id", OrderTatal.get(i).getId())
+                            .put("sumprice", ((OrderTatal.get(i).getPrice()*(OrderTatal.get(i).getQuantity()))))
+                                .put("quantity", OrderTatal.get(i).getQuantity());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    jsonArray.put(jsonObject);
+
+                }
+
+
+                RequestParams params = new RequestParams();
+                params.put("orderID",Utinity.Oder_id);
+                params.put("FoodObj",jsonArray.toString());
+
+                Log.d("Param ===== ", params.toString());
+                invokeWS(params);
+
+            }
+        });
+
+
+        if(FreshFoodFragment.products != null){
             list1 = FreshFoodFragment.products.getData();
         }
-        if(VegetableFragment.products.getData() != null){
+        if(VegetableFragment.products != null){
             list2 = VegetableFragment.products.getData();
         }
-        if(DrinkFragment.products.getData() != null){
+        if(DrinkFragment.products != null){
             list3 = DrinkFragment.products.getData();
         }
 
 
-        ArrayList<Product> OrderTatal = new ArrayList();
+        OrderTatal = new ArrayList();
 
         if (list1 != null){
             for (int i =0 ;i < list1.size();i++){
@@ -110,6 +163,8 @@ public class TotalOrderFragment extends Fragment {
 
         }
 
+//
+
         productsList = new Products(OrderTatal);
 
         ProductsAdapter productsAdapter = new ProductsAdapter(productsList, productClickListener, getActivity().getLayoutInflater());
@@ -118,8 +173,9 @@ public class TotalOrderFragment extends Fragment {
 
         TextView textView_price = (TextView) rootview.findViewById(R.id.text_total_price);
         textView_price.setText(String.valueOf(totalPrice));
-        
-        
+
+
+
         return  rootview;
     }
 
@@ -136,6 +192,61 @@ public class TotalOrderFragment extends Fragment {
 //            productsAdapter.notifyDataSetChanged();
         }
     };
+
+    public void invokeWS(RequestParams params){
+
+        Log.d("Tag ---- ",params.toString());
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(Utinity.url+"order/addorder",params ,new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(String response) {
+                try {
+                    // JSON Object
+                    JSONObject obj = new JSONObject(response);
+                    // When the JSON response has status boolean value assigned with true
+                    if(obj.getBoolean("status")){
+
+
+                        FragmentManager myFragmentManager = getActivity().getSupportFragmentManager();
+                        FragmentTransaction myFragmentTransaction = myFragmentManager.beginTransaction();
+                        myFragmentTransaction.replace(R.id.content_view, new TabMenuFragment()).commit();
+                    }
+                    // Else display error message
+                    else{
+                        Toast.makeText(getActivity().getApplicationContext(), obj.getString("Busy"), Toast.LENGTH_LONG).show();
+                    }
+
+
+
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    Toast.makeText(getActivity().getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+
+                }
+
+
+            }
+            // When the response returned by REST has Http response code other than '200'
+            @Override
+            public void onFailure(int statusCode, Throwable error,
+                                  String content) {
+                // When Http response code is '404'
+                if(statusCode == 404){
+                    Toast.makeText(getActivity().getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
+                }
+                // When Http response code is '500'
+                else if(statusCode == 500){
+                    Toast.makeText(getActivity().getApplicationContext(), "Something went wrong at server end ", Toast.LENGTH_LONG).show();
+                }
+                // When Http response code other than 404, 500
+                else{
+                    Toast.makeText(getActivity().getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
 
 
 }

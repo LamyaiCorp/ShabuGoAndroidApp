@@ -27,7 +27,7 @@ import java.util.ArrayList;
 
 public class FreshFoodFragment extends Fragment {
 
-    ListView listView;
+    ListView productsListView;
     JSONArray obj ;
     JSONObject jsondata;
     public static Products products;
@@ -68,9 +68,9 @@ public class FreshFoodFragment extends Fragment {
                     if(obj != null){
 
                         products = createInitialProductList(obj);
-                         if(products != null ){
+                         if(products.getData() != null){
                              productsAdapter = new ProductsAdapter(products, productClickListener, getActivity().getLayoutInflater());
-                             ListView productsListView = (ListView) getActivity().findViewById(R.id.listview_f1);
+                             productsListView = (ListView) getActivity().findViewById(R.id.listview_f1);
                              productsListView.setAdapter(productsAdapter);
                          }
                     }

@@ -65,7 +65,7 @@ public class DrinkFragment extends Fragment {
                     obj = new JSONArray(response);
 
                     products = createInitialProductList(obj);
-                    if(products != null){
+                    if(products.size() >0){
                         productsAdapter = new ProductsAdapter(products, productClickListener, getActivity().getLayoutInflater());
                         ListView productsListView = (ListView) getActivity().findViewById(R.id.listview_f3);
                         productsListView.setAdapter(productsAdapter);

@@ -14,12 +14,30 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.knott.navtab.R;
+import com.knott.navtab.listproduce.Product;
+import com.knott.navtab.listproduce.ProductClickListener;
+import com.knott.navtab.listproduce.Products;
+import com.knott.navtab.listproduce.ProductsAdapter;
+import com.knott.navtab.unity.Utinity;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class CartFragment extends Fragment {
 
+    JSONArray obj ;
+    JSONObject jsondata;
+    public static Products products;
+    ProductsAdapter productsAdapter;
 
     public CartFragment() {
         // Required empty public constructor
@@ -31,69 +49,113 @@ public class CartFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootview = inflater.inflate(R.layout.fragment_cart, container, false);
-        int[] img = {R.drawable.ic_menu_camera,R.drawable.ic_menu_gallery,R.drawable.ic_menu_manage
-        };
-        String[] list = { "Aerith Gainsborough", "Barret Wallace", "Cait Sith"};
 
-        ListView cartList = (ListView) rootview.findViewById(R.id.list_cart_item);
-        CartAdapter cartAdapter = new CartAdapter(getActivity(),list,img);
-        cartList.setAdapter(cartAdapter);
+        RequestParams params = new RequestParams();
+        params.put("orderID", Utinity.Oder_id);
+        invokeWS(params);
 
         return rootview;
     }
 
-    private class CartAdapter extends BaseAdapter{
+    private void invokeWS(RequestParams params) {
 
-        Context mContext;
-        String[] strName;
-        int[] resId;
 
-        public CartAdapter(FragmentActivity activity, String[] list, int[] img) {
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(Utinity.url + "order" + "/" + "getorder",params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(String response) {
+//                Log.d("TAG ===== ",response.toString());
 
-            this.mContext = activity;
-            this.strName = list;
-            this.resId = img;
-        }
+                try {
 
-        @Override
-        public int getCount() {
-            return strName.length;
-        }
+                    // JSON Object
+                    obj = new JSONArray(response);
 
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
+                    products = createInitialProductList(obj);
+                    if(products.size() >0){
+                        productsAdapter = new ProductsAdapter(products, productClickListener, getActivity().getLayoutInflater());
+                        ListView productsListView = (ListView) getActivity().findViewById(R.id.listview_f3);
+                        productsListView.setAdapter(productsAdapter);
+                    }
 
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
+                } catch (JSONException e) {
+                    e.printStackTrace();
 
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View rootview = null;
-            TextView textView = null;
-            ImageView imageView = null;
-
-            LayoutInflater mInflater ;
-            if(convertView == null) {
-                mInflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                rootview = mInflater.inflate(R.layout.fragment_cart, parent, false);
-
-                textView = (TextView) rootview.findViewById(R.id.text_cart_name);
-
-                imageView = (ImageView) rootview.findViewById(R.id.list_cart_image);
+                }
 
 
             }
 
-           if(resId != null) {
-               imageView.setBackgroundResource(resId[position]);
-           }
-            textView.setText(strName[position]);
 
-            return rootview;
-        }
+            // When the response returned by REST has Http response code other than '200'
+            @Override
+            public void onFailure(int statusCode, Throwable error,
+                                  String content) {
+
+                // When Http response code is '404'
+                if (statusCode == 404) {
+
+                }
+                // When Http response code is '500'
+                else if (statusCode == 500) {
+
+                }
+                // When Http response code other than 404, 500
+                else {
+
+                }
+            }
+        });
+
     }
+
+    private final ProductClickListener productClickListener = new ProductClickListener() {
+        @Override
+        public void onMinusClick(Product product) {
+//            products.removeOneFrom(product);
+//            productsAdapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onPlusClick(Product product) {
+//            products.addOneTo(product);
+//            productsAdapter.notifyDataSetChanged();
+        }
+    };
+
+
+    private Products createInitialProductList(JSONArray obj) throws JSONException {
+
+
+        ArrayList<Product> arrayList = new ArrayList();
+        for(int i = 0; i< obj.length(); i++){
+            jsondata = obj.getJSONObject(i);
+            arrayList.add(
+                    new Product(Integer.valueOf((Integer) jsondata.get("id")),String.valueOf(jsondata.get("name")),Integer.valueOf((Integer) jsondata.get("price")) , 0,String.valueOf(jsondata.get("img")))
+            );
+        }
+
+        if(products == null){
+            products = new Products(arrayList);
+
+        }
+
+
+        return  products;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+//        invokeWS();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+//        invokeWS();
+    }
+
+
+
 }

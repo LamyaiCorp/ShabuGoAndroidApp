@@ -32,11 +32,12 @@
         android:id="@+id/username"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:inputType="textEmailAddress"
-        android:textColor="@android:color/black"
         android:layout_below="@+id/textView3"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="12dp" />
+        android:layout_marginTop="12dp"
+        android:inputType="textEmailAddress"
+        android:text="a@a.com"
+        android:textColor="@android:color/black" />
 
     <TextView
         android:id="@+id/textView4"
@@ -59,6 +60,7 @@
         android:layout_marginTop="12dp"
         android:ems="10"
         android:inputType="textPassword"
+        android:text="1234"
         android:textColor="@android:color/black" />
 
     <Button

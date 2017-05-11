@@ -10,16 +10,28 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import com.knott.navtab.fragment.BillFragment;
 import com.knott.navtab.fragment_cart.CartFragment;
 import com.knott.navtab.fragment.HomeFragment;
+import com.knott.navtab.listproduce.ProductsAdapter;
+import com.knott.navtab.loing.*;
 import com.knott.navtab.nfc.NFCFragment;
 import com.knott.navtab.fragment.TabMenuFragment;
 import com.knott.navtab.nfc.NfcTouch;
 import com.knott.navtab.unity.Utinity;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class Main2Activity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -119,12 +131,75 @@ public class Main2Activity extends AppCompatActivity
             myFragmentTransaction.replace(R.id.content_view, new BillFragment()).commit();
 
         } else if(id == R.id.nav_share){
-//
-            finish();
+
+
+            RequestParams params = new RequestParams();
+            params.put("id",Utinity.NFC);
+            invokeWSLogout(params);
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void invokeWSLogout(RequestParams params) {
+
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(Utinity.url + "table" + "/" + "dotable",params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(String response) {
+                Log.d("TAG ===== ","invokeWS");
+                try {
+
+                    // JSON Object
+                    JSONObject obj = new JSONObject(response);
+                    // When the JSON response has status boolean value assigned with true
+                    if(obj.getBoolean("status")){
+//                        errorMsg.setText("");
+                        Utinity.user_id = String.valueOf(obj.getInt("id"));
+                        Toast.makeText(getApplicationContext(), "You are successfully logged in!" + Utinity.user_id, Toast.LENGTH_LONG).show();
+
+                        Intent loginIntent = new Intent(Main2Activity.this, com.knott.navtab.loing.MainActivity.class);
+                        startActivity(loginIntent);
+                    }
+                    // Else display error message
+                    else{
+//                        errorMsg.setText(obj.getString("error_msg"));
+                        Toast.makeText(getApplicationContext(), obj.getString("error_msg"), Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+
+                }
+
+
+            }
+
+
+            // When the response returned by REST has Http response code other than '200'
+            @Override
+            public void onFailure(int statusCode, Throwable error,
+                                  String content) {
+
+                // When Http response code is '404'
+                if (statusCode == 404) {
+
+                }
+                // When Http response code is '500'
+                else if (statusCode == 500) {
+
+                }
+                // When Http response code other than 404, 500
+                else {
+
+                }
+            }
+        });
+
     }
 }

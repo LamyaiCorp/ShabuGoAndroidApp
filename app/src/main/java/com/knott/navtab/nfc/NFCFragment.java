@@ -59,7 +59,7 @@ public class NFCFragment extends Fragment {
                 Utinity.NFC = false;
 
                 RequestParams params = new RequestParams();
-                params.put("id", "");
+                params.put("id","33 a6 7c 03");
                 params.put("customerID",Utinity.user_id);
                 invokeWS(params);
 
@@ -117,7 +117,7 @@ public class NFCFragment extends Fragment {
         // Make RESTful webservice call using AsyncHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
 //        textViewInfo.setText(params.toString());
-        client.get(Utinity.url+"useraccount/table/dotable",params ,new AsyncHttpResponseHandler() {
+        client.get(Utinity.url+"table/dotable",params ,new AsyncHttpResponseHandler() {
             // When the response returned by REST has Http response code '200'
             @Override
             public void onSuccess(String response) {
@@ -128,6 +128,8 @@ public class NFCFragment extends Fragment {
                     // When the JSON response has status boolean value assigned with true
                     if(obj.getBoolean("status")){
                         Utinity.NFC = false;
+                        Utinity.table_number = obj.getInt("number");
+                        Utinity.Oder_id = String.valueOf(obj.getInt("orderID"));
                         FragmentManager myFragmentManager = getActivity().getSupportFragmentManager();
                         FragmentTransaction myFragmentTransaction = myFragmentManager.beginTransaction();
                         myFragmentTransaction.replace(R.id.content_view, new TabMenuFragment()).commit();

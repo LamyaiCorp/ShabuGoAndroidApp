@@ -12,17 +12,16 @@
         android:layout_height="match_parent">
 
         <Button
-            android:id="@+id/but_confirm"
+            android:id="@+id/but_confirm_order"
             android:layout_width="368dp"
             android:layout_height="48dp"
-            android:onClick="onClickComfirmOrder"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:text="Confirm Order"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginRight="8dp"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginLeft="8dp"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginBottom="8dp" />
+            app:layout_constraintRight_toRightOf="parent" />
 
         <TextView
             android:id="@+id/textView4"
@@ -33,7 +32,7 @@
             android:layout_marginTop="8dp"
             android:text="ยอดรวม"
             android:textSize="24sp"
-            app:layout_constraintBottom_toTopOf="@+id/but_confirm"
+            app:layout_constraintBottom_toTopOf="@+id/but_confirm_order"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/list_oderdetail"
             app:layout_constraintVertical_bias="0.933"
