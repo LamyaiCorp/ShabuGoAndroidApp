@@ -118,7 +118,7 @@ public class RegisterActivity extends Activity {
         prgDialog.show();
         // Make RESTful webservice call using AsyncHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get("http://192.168.1.36:8080/MyService/register/doregister",params ,new AsyncHttpResponseHandler() {
+        client.get("http://161.246.136.37:8080/MyService/register/doregister",params ,new AsyncHttpResponseHandler() {
             // When the response returned by REST has Http response code '200'
             @Override
             public void onSuccess(String response) {

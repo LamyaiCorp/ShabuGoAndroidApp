@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.knott.navtab.Main2Activity;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -95,7 +96,7 @@ public class LoginActivity extends Activity {
         prgDialog.show();
         // Make RESTful webservice call using AsyncHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get("http://192.168.1.36:8080/MyService/login/dologin",params ,new AsyncHttpResponseHandler() {
+        client.get("http://161.246.136.37:8080/MyService/login/dologin",params ,new AsyncHttpResponseHandler() {
             // When the response returned by REST has Http response code '200'
             @Override
             public void onSuccess(String response) {
@@ -108,8 +109,8 @@ public class LoginActivity extends Activity {
                     if(obj.getBoolean("status")){
                         errorMsg.setText("");
                         Toast.makeText(getApplicationContext(), "You are successfully logged in!", Toast.LENGTH_LONG).show();
-                        // Navigate to Home screen
-                        //navigatetoHomeActivity();
+                        Intent loginIntent = new Intent(LoginActivity.this,Main2Activity.class);
+                        startActivity(loginIntent);
                     }
                     // Else display error message
                     else{
@@ -144,16 +145,5 @@ public class LoginActivity extends Activity {
             }
         });
     }
-
-    /**
-     * Method gets triggered when Register button is clicked
-     *
-     * @param view
-     */
-//    public void navigatetoRegisterActivity(View view){
-//        Intent loginIntent = new Intent(getApplicationContext(),RegisterActivity.class);
-//        loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        startActivity(loginIntent);
-//    }
 
 }

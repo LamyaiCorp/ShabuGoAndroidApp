@@ -1,5 +1,6 @@
 package com.knott.navtab;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -17,6 +18,7 @@ import com.knott.navtab.fragment.CartFragment;
 import com.knott.navtab.fragment.HomeFragment;
 import com.knott.navtab.fragment.NFCFragment;
 import com.knott.navtab.fragment.TabMenuFragment;
+import com.knott.navtab.loing.*;
 import com.knott.navtab.unity.Utinity;
 
 public class Main2Activity extends AppCompatActivity
@@ -117,7 +119,8 @@ public class Main2Activity extends AppCompatActivity
             myFragmentTransaction.replace(R.id.content_view, new BillFragment()).commit();
 
         } else if(id == R.id.nav_share){
-
+            Intent loginIntent = new Intent(getApplicationContext(), com.knott.navtab.loing.MainActivity.class);
+            startActivity(loginIntent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
