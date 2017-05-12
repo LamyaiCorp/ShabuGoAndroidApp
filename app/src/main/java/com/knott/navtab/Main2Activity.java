@@ -153,6 +153,8 @@ public class Main2Activity extends AppCompatActivity
                     JSONObject obj = new JSONObject(response);
                     // When the JSON response has status boolean value assigned with true
                     if(obj.getBoolean("status")){
+
+                        Utinity.NFC = true;
 ////
                         Intent loginIntent = new Intent(Main2Activity.this, com.knott.navtab.loing.MainActivity.class);
                         startActivity(loginIntent);

@@ -12,7 +12,7 @@ public class Utinity {
 
 
        public static int user_id;
-       public static String Oder_id ;
+       public static int Oder_id ;
        public static  String table_id = "37ca633";
        public static int table_number;
        public static String urlImg = "http://161.246.136.37:8080/MyService/menuFood/images?image=";

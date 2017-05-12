@@ -56,6 +56,23 @@ public class NFCFragment extends Fragment implements NFCcallback.AccountCallback
             nfCcallback = new NFCcallback(this);
             enableReaderMode();
         }
+
+        Button nfc_clivk = (Button) rootViw.findViewById(R.id.button_nfc);
+        nfc_clivk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utinity.NFC = false;
+
+                RequestParams params = new RequestParams();
+                params.put("TableID",Utinity.table_id);
+                params.put("customerID",String.valueOf(Utinity.user_id));
+                invokeWS(params);
+
+//                FragmentManager myFragmentManager = getActivity().getSupportFragmentManager();
+//                FragmentTransaction myFragmentTransaction = myFragmentManager.beginTransaction();
+//                myFragmentTransaction.replace(R.id.content_view, new TabMenuFragment()).commit();
+            }
+        });
         return rootViw;
     }
 
@@ -119,6 +136,7 @@ public class NFCFragment extends Fragment implements NFCcallback.AccountCallback
                     // When the JSON response has status boolean value assigned with true
                     if(obj.getBoolean("status")){
                         Utinity.NFC = false;
+                        Utinity.Oder_id = obj.getInt("orderID");
                         FragmentManager myFragmentManager = getActivity().getSupportFragmentManager();
                         FragmentTransaction myFragmentTransaction = myFragmentManager.beginTransaction();
                         myFragmentTransaction.replace(R.id.content_view, new TabMenuFragment()).commit();

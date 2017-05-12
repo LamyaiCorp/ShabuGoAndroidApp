@@ -40,6 +40,7 @@ public class CartFragment extends Fragment {
     JSONObject jsondata;
     public static Cartitems cartitems;
     ListView cartListView;
+    CartItemAdapter cartItemAdapter;
 
 
     public CartFragment() {
@@ -54,7 +55,7 @@ public class CartFragment extends Fragment {
         View rootview = inflater.inflate(R.layout.fragment_cart, container, false);
 
         RequestParams params = new RequestParams();
-        params.put("orderID", "34");
+        params.put("orderID", String.valueOf(Utinity.Oder_id));
         invokeWS(params);
 
         return rootview;
@@ -74,10 +75,15 @@ public class CartFragment extends Fragment {
                     obj = new JSONArray(response);
 
                     if(obj != null){
+
+
                         cartitems = createInitialProductList(obj);
-                        CartItemAdapter CartItemAdapter = new CartItemAdapter(cartitems,getActivity().getLayoutInflater());
+                        Log.d("TAG ===== ",String.valueOf(cartitems.size()));
+                        cartItemAdapter = new CartItemAdapter(cartitems,getActivity().getLayoutInflater());
                         cartListView = (ListView) getActivity().findViewById(R.id.list_cart_item);
-                        cartListView.setAdapter(CartItemAdapter);
+                        cartListView.setAdapter(cartItemAdapter);
+
+
                     }
 
 
@@ -107,7 +113,16 @@ public class CartFragment extends Fragment {
 
                 }
             }
+
+            @Override
+            public void onRetry() {
+                super.onRetry();
+                Log.d("TAG ===== ","onRetrydddddd");
+                cartListView.setAdapter(cartItemAdapter);
+
+            }
         });
+
 
     }
 
@@ -139,6 +154,7 @@ public class CartFragment extends Fragment {
                             Integer.valueOf(jsondata.getInt("quantity"))
                     )
             );
+
         }
 
         if(cartitems == null){
@@ -160,6 +176,7 @@ public class CartFragment extends Fragment {
     public void onResume() {
         super.onResume();
 //        invokeWS();
+
     }
 
 

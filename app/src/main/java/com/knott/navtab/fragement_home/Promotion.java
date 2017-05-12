@@ -16,6 +16,8 @@ public class Promotion  implements Serializable{
         this.content = content;
     }
 
+
+
     public String getContent() {
         return content;
     }

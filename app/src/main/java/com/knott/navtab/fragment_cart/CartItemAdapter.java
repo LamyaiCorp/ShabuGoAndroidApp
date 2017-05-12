@@ -1,20 +1,13 @@
 package com.knott.navtab.fragment_cart;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Base64;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.knott.navtab.R;
-import com.knott.navtab.listproduce.Product;
-import com.knott.navtab.listproduce.ProductClickListener;
-import com.knott.navtab.listproduce.ProductDataSet;
+
 
 public class CartItemAdapter extends BaseAdapter {
 

@@ -87,7 +87,7 @@ public class TotalOrderFragment extends Fragment {
 
 
                 RequestParams params = new RequestParams();
-                params.put("orderID",Utinity.Oder_id);
+                params.put("orderID",String.valueOf(Utinity.Oder_id));
                 params.put("FoodObj",jsonArray.toString());
 
                 Log.d("Param ===== ", params.toString());

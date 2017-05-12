@@ -2,19 +2,19 @@ package com.knott.navtab.fragement_home;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Base64;
+import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.knott.navtab.R;
-import com.knott.navtab.listproduce.Product;
-import com.knott.navtab.listproduce.ProductClickListener;
-import com.knott.navtab.listproduce.ProductDataSet;
+import com.knott.navtab.listproduce.ProductsAdapter;
+
+import java.io.InputStream;
 
 public class PromotionAdapter extends BaseAdapter {
 
@@ -66,6 +66,8 @@ public class PromotionAdapter extends BaseAdapter {
 
     private void update(ViewHolder viewHolder, final Promotion promotion) {
         viewHolder.name.setText(promotion.content);
+        new PromotionAdapter.DownloadImageTask(viewHolder.list_image).execute(promotion.url);
+
 
     }
 
@@ -75,19 +77,56 @@ public class PromotionAdapter extends BaseAdapter {
 
 
 //        final TextView price;
-//        final ImageView list_image;
+        final ImageView list_image;
 
         public static ViewHolder from(View view) {
             return new ViewHolder(
-                    ((TextView) view.findViewById(R.id.textView9))
+                    ((TextView) view.findViewById(R.id.textView9)),
+                    (ImageView) view.findViewById(R.id.imageView_home)
 //                   , ((TextView) view.findViewById(R.id.plist_price_text))
-            );
+                    );
         }
 
-        public ViewHolder(TextView name) {
+        public ViewHolder(TextView name, ImageView list_image) {
             this.name = name;
 //            this.price = price;
 //            this.list_image = list_image;
+            this.list_image = list_image;
+        }
+    }
+
+    class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            // TODO Auto-generated method stub
+            super.onPreExecute();
+//            pd.show();
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result) {
+            super.onPostExecute(result);
+//            pd.dismiss();
+            bmImage.setImageBitmap(result);
         }
     }
 
