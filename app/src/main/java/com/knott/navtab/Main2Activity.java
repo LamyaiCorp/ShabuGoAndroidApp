@@ -20,6 +20,7 @@ import com.knott.navtab.fragment.BillFragment;
 import com.knott.navtab.fragment_cart.CartFragment;
 import com.knott.navtab.fragement_home.HomeFragment;
 import com.knott.navtab.fragment.TabMenuFragment;
+import com.knott.navtab.nfc.NFCFragment;
 import com.knott.navtab.unity.Utinity;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
