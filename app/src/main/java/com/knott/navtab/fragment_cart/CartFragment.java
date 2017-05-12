@@ -2,9 +2,11 @@ package com.knott.navtab.fragment_cart;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,8 +38,9 @@ public class CartFragment extends Fragment {
 
     JSONArray obj ;
     JSONObject jsondata;
-    public static Products products;
-    ProductsAdapter productsAdapter;
+    public static Cartitems cartitems;
+    ListView cartListView;
+
 
     public CartFragment() {
         // Required empty public constructor
@@ -51,7 +54,7 @@ public class CartFragment extends Fragment {
         View rootview = inflater.inflate(R.layout.fragment_cart, container, false);
 
         RequestParams params = new RequestParams();
-        params.put("orderID", Utinity.Oder_id);
+        params.put("orderID", "34");
         invokeWS(params);
 
         return rootview;
@@ -64,23 +67,22 @@ public class CartFragment extends Fragment {
         client.get(Utinity.url + "order" + "/" + "getorder",params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(String response) {
-//                Log.d("TAG ===== ",response.toString());
+                Log.d("TAG ===== ",response.toString());
 
+                // JSON Object
                 try {
-
-                    // JSON Object
                     obj = new JSONArray(response);
 
-                    products = createInitialProductList(obj);
-                    if(products.size() >0){
-                        productsAdapter = new ProductsAdapter(products, productClickListener, getActivity().getLayoutInflater());
-                        ListView productsListView = (ListView) getActivity().findViewById(R.id.listview_f3);
-                        productsListView.setAdapter(productsAdapter);
+                    if(obj != null){
+                        cartitems = createInitialProductList(obj);
+                        CartItemAdapter CartItemAdapter = new CartItemAdapter(cartitems,getActivity().getLayoutInflater());
+                        cartListView = (ListView) getActivity().findViewById(R.id.list_cart_item);
+                        cartListView.setAdapter(CartItemAdapter);
                     }
+
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-
                 }
 
 
@@ -124,24 +126,28 @@ public class CartFragment extends Fragment {
     };
 
 
-    private Products createInitialProductList(JSONArray obj) throws JSONException {
+    private Cartitems createInitialProductList(JSONArray obj) throws JSONException {
 
 
-        ArrayList<Product> arrayList = new ArrayList();
+        ArrayList<CartItem> arrayList = new ArrayList();
         for(int i = 0; i< obj.length(); i++){
             jsondata = obj.getJSONObject(i);
             arrayList.add(
-                    new Product(Integer.valueOf((Integer) jsondata.get("id")),String.valueOf(jsondata.get("name")),Integer.valueOf((Integer) jsondata.get("price")) , 0,String.valueOf(jsondata.get("img")))
+                    new CartItem(
+                            String.valueOf(jsondata.get("name")),
+                            Integer.valueOf(jsondata.getInt("price")),
+                            Integer.valueOf(jsondata.getInt("quantity"))
+                    )
             );
         }
 
-        if(products == null){
-            products = new Products(arrayList);
+        if(cartitems == null){
+            cartitems = new Cartitems(arrayList);
 
         }
 
 
-        return  products;
+        return  cartitems;
     }
 
     @Override

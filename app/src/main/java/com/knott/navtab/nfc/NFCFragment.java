@@ -59,7 +59,7 @@ public class NFCFragment extends Fragment {
                 Utinity.NFC = false;
 
                 RequestParams params = new RequestParams();
-                params.put("id","33 a6 7c 03");
+                params.put("id",Utinity.table_id);
                 params.put("customerID",Utinity.user_id);
                 invokeWS(params);
 

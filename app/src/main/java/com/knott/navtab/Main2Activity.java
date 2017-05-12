@@ -134,7 +134,7 @@ public class Main2Activity extends AppCompatActivity
 
 
             RequestParams params = new RequestParams();
-            params.put("id",Utinity.NFC);
+            params.put("id",Utinity.table_id);
             invokeWSLogout(params);
 
         }
@@ -148,27 +148,24 @@ public class Main2Activity extends AppCompatActivity
 
 
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get(Utinity.url + "table" + "/" + "dotable",params, new AsyncHttpResponseHandler() {
+        client.get(Utinity.url + "table" + "/" + "nottable",params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(String response) {
-                Log.d("TAG ===== ","invokeWS");
+                Log.d("TAG ===== ",response.toString());
                 try {
 
                     // JSON Object
                     JSONObject obj = new JSONObject(response);
                     // When the JSON response has status boolean value assigned with true
                     if(obj.getBoolean("status")){
-//                        errorMsg.setText("");
-                        Utinity.user_id = String.valueOf(obj.getInt("id"));
-                        Toast.makeText(getApplicationContext(), "You are successfully logged in!" + Utinity.user_id, Toast.LENGTH_LONG).show();
-
+////
                         Intent loginIntent = new Intent(Main2Activity.this, com.knott.navtab.loing.MainActivity.class);
                         startActivity(loginIntent);
+//                        finish();
                     }
                     // Else display error message
                     else{
-//                        errorMsg.setText(obj.getString("error_msg"));
-                        Toast.makeText(getApplicationContext(), obj.getString("error_msg"), Toast.LENGTH_LONG).show();
+//
                     }
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block

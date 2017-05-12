@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -8,19 +9,11 @@
         android:layout_height="match_parent"
         android:background="#fff"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:padding="10dp"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp">
 
         <!-- ListRow Left sied Thumbnail image -->
-
-        <LinearLayout
-            android:id="@+id/thumbnail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_marginRight="7dip"
-            android:padding="2dip">
-
-        </LinearLayout>
 
         <!-- Title Of Song -->
 
@@ -59,8 +52,8 @@
             <!--android:layout_height="36dp"-->
             <!--android:src="@drawable/minus1" />-->
 
-            <EditText
-                android:id="@+id/text_quantity_item"
+            <TextView
+                android:id="@+id/text_cart_quantity_item"
                 android:layout_width="55dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -75,4 +68,5 @@
             <!--android:src="@drawable/plus1" />-->
         </LinearLayout>
     </RelativeLayout>
+
 </LinearLayout>
