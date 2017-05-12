@@ -24,65 +24,97 @@ import org.json.JSONObject;
 public class NfcTouch extends AppCompatActivity {
 
     private NfcAdapter nfcAdapter;
-//    TextView textViewInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_nfc);
-//        textViewInfo = (TextView)findViewById(R.id.info);
 
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         if(nfcAdapter == null){
             Toast.makeText(this,
                     "NFC NOT supported on this devices!",
                     Toast.LENGTH_LONG).show();
-//            finish();
         }else if(!nfcAdapter.isEnabled()){
             Toast.makeText(this,
                     "NFC NOT Enabled!",
                     Toast.LENGTH_LONG).show();
-//            finish();
-        }
-    }
+        }else {
+            Intent intent = getIntent();
+            String action = intent.getAction();
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+            if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)) {
+//            Toast.makeText(this,
+//                    "onResume() - ACTION_TAG_DISCOVERED",
+//                    Toast.LENGTH_SHORT).show();
 
-        Intent intent = getIntent();
-        String action = intent.getAction();
-
-        if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)) {
-            Toast.makeText(this,
-                    "onResume() - ACTION_TAG_DISCOVERED",
-                    Toast.LENGTH_SHORT).show();
-
-            Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-            String tagInfo = new String();
-            if(tag == null){
+                Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+                String tagInfo = new String();
+                if(tag == null){
 //                textViewInfo.setText("tag == null");
-            }else{
+                }else{
 
-                byte[] tagId = tag.getId();
+                    byte[] tagId = tag.getId();
 
-                for(int i=0; i<tagId.length; i++){
-                    tagInfo += Integer.toHexString(tagId[i] & 0xFF) + " ";
+                    for(int i=0; i<tagId.length; i++){
+                        tagInfo += Integer.toHexString(tagId[i] & 0xFF);
+                    }
+
+                    Utinity.table_id = tagInfo;
+                    //Toast.makeText(getApplicationContext(), String.valueOf(Utinity.user_id), Toast.LENGTH_LONG).show();
+                    RequestParams params = new RequestParams();
+                    params.put("TableID", Utinity.table_id);
+                    params.put("customerID",String.valueOf(Utinity.user_id));
+                    invokeWS(params);
+
                 }
-
-                RequestParams params = new RequestParams();
-                params.put("id", tagInfo);
-                params.put("customerID",Utinity.user_id);
-                invokeWS(params);
-
+            }else{
+//            Toast.makeText(this,
+//                    "onResume() : " + action,
+//                    Toast.LENGTH_SHORT).show();
             }
-        }else{
-            Toast.makeText(this,
-                    "onResume() : " + action,
-                    Toast.LENGTH_SHORT).show();
         }
-
     }
+
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//
+//        Intent intent = getIntent();
+//        String action = intent.getAction();
+//
+//        if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)) {
+////            Toast.makeText(this,
+////                    "onResume() - ACTION_TAG_DISCOVERED",
+////                    Toast.LENGTH_SHORT).show();
+//
+//            Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+//            String tagInfo = new String();
+//            if(tag == null){
+////                textViewInfo.setText("tag == null");
+//            }else{
+//
+//                byte[] tagId = tag.getId();
+//
+//                for(int i=0; i<tagId.length; i++){
+//                    tagInfo += Integer.toHexString(tagId[i] & 0xFF);
+//                }
+//
+//                Utinity.table_id = tagInfo;
+//                //Toast.makeText(getApplicationContext(), String.valueOf(Utinity.user_id), Toast.LENGTH_LONG).show();
+//                RequestParams params = new RequestParams();
+//                params.put("TableID", Utinity.table_id);
+//                params.put("customerID",String.valueOf(Utinity.user_id));
+//                invokeWS(params);
+//
+//            }
+//        }else{
+////            Toast.makeText(this,
+////                    "onResume() : " + action,
+////                    Toast.LENGTH_SHORT).show();
+//        }
+//
+//    }
 
 
     /**
@@ -100,19 +132,19 @@ public class NfcTouch extends AppCompatActivity {
             @Override
             public void onSuccess(String response) {
 
-                Toast.makeText(getApplicationContext(), "onSuccess", Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(), response , Toast.LENGTH_LONG).show();
 //                textViewInfo.setText(response.toString());
                 try {
                     // JSON Object
                     JSONObject obj = new JSONObject(response);
                     // When the JSON response has status boolean value assigned with true
                     if(obj.getBoolean("status")){
-
                         Utinity.NFC = false;
-//                        Toast.makeText(getApplicationContext(), obj.getInt("number"), Toast.LENGTH_LONG).show();
+//                        Toast.makeText(getApplicationContext(), ""+obj.getInt("number"), Toast.LENGTH_LONG).show();
 //                        FragmentManager myFragmentManager = getSupportFragmentManager();
 //                        FragmentTransaction myFragmentTransaction = myFragmentManager.beginTransaction();
 //                        myFragmentTransaction.replace(R.id.content_view, new TabMenuFragment()).commit();
+                        finish();
                     }
                     // Else display error message
                     else{
@@ -128,8 +160,8 @@ public class NfcTouch extends AppCompatActivity {
 
                 }
 
-                Intent  orderIneger = new Intent (NfcTouch.this,MainActivity.class);
-                startActivity(orderIneger);
+//                Intent  orderIneger = new Intent (NfcTouch.this,MainActivity.class);
+//                startActivity(orderIneger);
             }
             // When the response returned by REST has Http response code other than '200'
             @Override

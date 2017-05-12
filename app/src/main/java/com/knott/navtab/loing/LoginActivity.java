@@ -109,8 +109,8 @@ public class LoginActivity extends Activity {
                     // When the JSON response has status boolean value assigned with true
                     if(obj.getBoolean("status")){
                         errorMsg.setText("");
-                        Utinity.user_id = String.valueOf(obj.getInt("id"));
-                        Toast.makeText(getApplicationContext(), "You are successfully logged in!" + Utinity.user_id, Toast.LENGTH_LONG).show();
+                        Utinity.user_id = obj.getInt("id");
+                        Toast.makeText(getApplicationContext(), "You are successfully logged in! " + Utinity.user_id, Toast.LENGTH_LONG).show();
 
                         Intent loginIntent = new Intent(LoginActivity.this,Main2Activity.class);
                         startActivity(loginIntent);

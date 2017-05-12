@@ -2,6 +2,7 @@ package com.knott.navtab;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.design.widget.NavigationView;
@@ -106,11 +107,10 @@ public class Main2Activity extends AppCompatActivity
         } else if (id == R.id.nav_gallery) {
 
            if(Utinity.NFC ){
+
                myFragmentManager = getSupportFragmentManager();
                myFragmentTransaction = myFragmentManager.beginTransaction();
                myFragmentTransaction.replace(R.id.content_view, new NFCFragment()).commit();
-//               Intent intent = new Intent(this, NfcTouch.class);
-//               startActivity(intent);
 
            }
            else {
@@ -163,10 +163,7 @@ public class Main2Activity extends AppCompatActivity
                         startActivity(loginIntent);
 //                        finish();
                     }
-                    // Else display error message
-                    else{
-//
-                    }
+
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
                     Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();

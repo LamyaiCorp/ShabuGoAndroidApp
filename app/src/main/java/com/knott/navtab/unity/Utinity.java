@@ -6,13 +6,13 @@ package com.knott.navtab.unity;
 
 public class Utinity {
 
-    public static boolean NFC = true;
+       public static boolean NFC = true;
        public static String url = "http://161.246.136.37:8080/MyService/";
 //    public static String url = "http://192.168.1.102:8080/MyService/";
 
 
-       public static String user_id;
+       public static int user_id;
        public static String Oder_id ;
-        public static  String table_id = "33 a6 7c 03";
-        public static int table_number;
+       public static  String table_id;
+       public static int table_number;
 }
