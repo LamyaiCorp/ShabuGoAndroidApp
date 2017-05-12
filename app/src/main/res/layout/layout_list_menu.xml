@@ -62,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:layout_marginLeft="60dip"
-                android:layout_weight="0.23"
+                android:layout_weight="0.06"
                 android:paddingRight="5dip"
                 android:text="Rs. 200"
                 android:textColor="#1d1d1d"

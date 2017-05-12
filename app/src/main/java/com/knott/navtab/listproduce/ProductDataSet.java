@@ -1,5 +1,7 @@
 package com.knott.navtab.listproduce;
 
+import com.knott.navtab.fragement_home.Promotion;
+
 public interface ProductDataSet {
 
     int size();

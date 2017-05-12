@@ -124,7 +124,11 @@ public class VegetableFragment extends Fragment {
         for(int i = 0; i< obj.length(); i++){
             jsondata = obj.getJSONObject(i);
             arrayList.add(
-                    new Product(Integer.valueOf((Integer) jsondata.get("id")),String.valueOf(jsondata.get("name")),Integer.valueOf((Integer) jsondata.get("price")) , 0, String.valueOf(jsondata.get("img")))
+                    new Product(Integer.valueOf((Integer) jsondata.get("id")),
+                            String.valueOf(jsondata.get("name")),
+                            Integer.valueOf((Integer) jsondata.get("price")) ,
+                            0,
+                            Utinity.urlImg + String.valueOf(jsondata.get("img"))+"&folder=vegetable")
             );
         }
 

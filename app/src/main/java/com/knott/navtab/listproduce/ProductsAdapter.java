@@ -2,7 +2,9 @@ package com.knott.navtab.listproduce;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.knott.navtab.R;
+
+import java.io.InputStream;
 
 public class ProductsAdapter extends BaseAdapter {
 
@@ -66,7 +70,7 @@ public class ProductsAdapter extends BaseAdapter {
         viewHolder.name.setText(product.name);
         viewHolder.price.setText(String.valueOf(product.price));
         viewHolder.quantity_item.setText(String.valueOf(product.quantity));
-        viewHolder.list_image.setImageBitmap(decodeImage(product.img));
+        new DownloadImageTask(viewHolder.list_image).execute(product.img);
         viewHolder.minus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,15 +85,40 @@ public class ProductsAdapter extends BaseAdapter {
         });
     }
 
-    private Bitmap decodeImage(String img) {
+    class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
 
-        //decode base64 string to image
-        byte[] imageBytes = Base64.decode(img, Base64.DEFAULT);
-        Bitmap decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
 
-        return decodedImage;
+        @Override
+        protected void onPreExecute() {
+            // TODO Auto-generated method stub
+            super.onPreExecute();
+//            pd.show();
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result) {
+            super.onPostExecute(result);
+//            pd.dismiss();
+            bmImage.setImageBitmap(result);
+        }
     }
-
 
     public static final class ViewHolder {
         final TextView name;
