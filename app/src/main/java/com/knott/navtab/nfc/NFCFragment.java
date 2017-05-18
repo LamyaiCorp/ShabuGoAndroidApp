@@ -137,6 +137,7 @@ public class NFCFragment extends Fragment implements NFCcallback.AccountCallback
                     if(obj.getBoolean("status")){
                         Utinity.NFC = false;
                         Utinity.Oder_id = obj.getInt("orderID");
+                        Utinity.table_number = obj.getInt("number");
                         FragmentManager myFragmentManager = getActivity().getSupportFragmentManager();
                         FragmentTransaction myFragmentTransaction = myFragmentManager.beginTransaction();
                         myFragmentTransaction.replace(R.id.content_view, new TabMenuFragment()).commit();
