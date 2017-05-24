@@ -57,22 +57,22 @@ public class NFCFragment extends Fragment implements NFCcallback.AccountCallback
             enableReaderMode();
         }
 
-        Button nfc_clivk = (Button) rootViw.findViewById(R.id.button_nfc);
-        nfc_clivk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Utinity.NFC = false;
-
-                RequestParams params = new RequestParams();
-                params.put("TableID",Utinity.table_id);
-                params.put("customerID",String.valueOf(Utinity.user_id));
-                invokeWS(params);
-
-//                FragmentManager myFragmentManager = getActivity().getSupportFragmentManager();
-//                FragmentTransaction myFragmentTransaction = myFragmentManager.beginTransaction();
-//                myFragmentTransaction.replace(R.id.content_view, new TabMenuFragment()).commit();
-            }
-        });
+//        Button nfc_clivk = (Button) rootViw.findViewById(R.id.button_nfc);
+//        nfc_clivk.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Utinity.NFC = false;
+//
+//                RequestParams params = new RequestParams();
+//                params.put("TableID",Utinity.table_id);
+//                params.put("customerID",String.valueOf(Utinity.user_id));
+//                invokeWS(params);
+//
+////                FragmentManager myFragmentManager = getActivity().getSupportFragmentManager();
+////                FragmentTransaction myFragmentTransaction = myFragmentManager.beginTransaction();
+////                myFragmentTransaction.replace(R.id.content_view, new TabMenuFragment()).commit();
+//            }
+//        });
         return rootViw;
     }
 

@@ -10,6 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="?attr/colorButtonNormal"
         android:orientation="vertical"
         android:paddingBottom="8dp"
         android:paddingTop="8dp"
@@ -28,7 +29,7 @@
             android:padding="16dp"
             android:text="New Promotion"
             android:textAlignment="textStart"
-            android:textColor="@color/white"
+            android:textColor="@android:color/white"
             android:textSize="24sp"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
